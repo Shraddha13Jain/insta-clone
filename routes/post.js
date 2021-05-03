@@ -9,6 +9,7 @@ const Post=mongoose.model("Post");
 router.get('/allposts',requireLogin,(req,res)=>{
     Post.find()
     .populate("postedBy","_id name")
+    .populate("comments.postedBy","_id name")
     .then(posts=>{
         res.send({posts:posts})
     })
