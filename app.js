@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 //const PORT = 3000;
 mongoose.set('useFindAndModify', false);
 
+const cors=require('cors');
+
+app.use(cors());
 //const {MONGOURL} = require('./keys');
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
@@ -23,6 +26,9 @@ mongoose.connect(process.env.MONGOURL,{
      process.exit();
  }) 
 
+/*app.get('/',(req,res)=>{
+    res.send("welcome to blog app");
+});*/
 
 require('./models/user');
 require('./models/post');
@@ -31,6 +37,9 @@ app.use(express.json());
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
 
+app.use('*',(req,res,next)=>{
+    res.status(404).json({"msg":"NOT FOUND"});
+});
 
 const port=process.env.PORT || 3000;
 app.listen(port,(err)=>{
