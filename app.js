@@ -4,7 +4,7 @@ const express = require('express')
 const app = express();
 const bodyparser=require('body-parser');
 const mongoose = require('mongoose');
-const PORT = 3000;
+//const PORT = 3000;
 mongoose.set('useFindAndModify', false);
 
 //const {MONGOURL} = require('./keys');
@@ -32,6 +32,8 @@ app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
 
 
-app.listen(PORT,()=>{
-    console.log("serever is running on ",PORT);
-})
+const port=process.env.PORT || 3000;
+app.listen(port,(err)=>{
+    if(err) console.log(err);
+    else console.log(`post is live at ${port}`);
+});
