@@ -1,10 +1,12 @@
+require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const User= mongoose.model("User");
 const bcrypt = require('bcryptjs');
 const jwt= require('jsonwebtoken');
-const {JWT_SECRET}=require('../keys');
+//const {JWT_SECRET}=require('../keys');
 const requireLogin=require('../middleware/requireLogin')
 
 /*router.get('/protected',requireLogin,(req,res)=>{
@@ -62,7 +64,7 @@ router.post('/signin',(req,res)=>{
           .then(doMatch=>{
               if(doMatch){
                   //res.json({message : "successfully signed in "});
-                  const token = jwt.sign({_id:savedUser._id},JWT_SECRET)
+                  const token = jwt.sign({_id:savedUser._id},process.env.JWT_SECRET);
                   res.json({token});
                 }
               else {
