@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const requireLogin = require('../middleware/requireLogin');
 const Post=mongoose.model("Post");
 
-router.get('/allposts',(req,res)=>{
+router.get('/allposts',requireLogin,(req,res)=>{
     Post.find()
     .populate("postedBy","_id name")
     .then(posts=>{
@@ -47,5 +47,37 @@ router.get('/mypost',requireLogin,(req,res)=>{
         console.log(err);
     })
 })
+
+router.put('/like',requireLogin,(req,re)=>{
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push:{likes:req.user._id}
+    },{
+        new:true
+    }).exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:error});
+        }
+        else{
+            res.json(result)
+        }
+    })
+})
+
+router.put('/unlike',requireLogin,(req,re)=>{
+    Post.findByIdAndUpdate(req.body.postId,{
+        $pull:{likes:req.user._id}
+    },{
+        new:true
+    }).exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:error});
+        }
+        else{
+            res.json(result)
+        }
+    })
+})
+
+
 
 module.exports = router
