@@ -7,9 +7,7 @@ const mongoose = require('mongoose');
 //const PORT = 3000;
 mongoose.set('useFindAndModify', false);
 
-const cors=require('cors');
 
-app.use(cors());
 //const {MONGOURL} = require('./keys');
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
