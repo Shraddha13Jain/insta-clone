@@ -6,13 +6,16 @@ const mongoose = require('mongoose');
 const User= mongoose.model("User");
 const bcrypt = require('bcryptjs');
 const jwt= require('jsonwebtoken');
-//const {JWT_SECRET}=require('../keys');
 const requireLogin=require('../middleware/requireLogin')
+const nodemailer=require('nodemailer');
+const sendgridTransport=require('nodemailer-sendgrid-transport');
 
-/*router.get('/protected',requireLogin,(req,res)=>{
-    res.send("hello user")
-})
-*/
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth:{
+        api_key:process.env.API_KEY
+    }
+}))
 
 router.post('/signup',(req,res)=>{
     const{name,email,password,pic}=req.body;
@@ -33,6 +36,12 @@ router.post('/signup',(req,res)=>{
                 pic
             })
             user.save().then(user=>{
+                transporter.sendMail({
+                    to:user.email,
+                    from:"no-reply@insta.com",
+                    subject:"signup success",
+                    html:"<h1>WELCOME TO INSTAGRAM </h1>"
+                })
                 res.json({messgae:"succusfully asded"})
             })
             .catch(err=>{
