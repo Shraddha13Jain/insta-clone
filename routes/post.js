@@ -130,5 +130,15 @@ router.get('/getsubpost',requireLogin,(req,res)=>{
         console.log(err);
     })
 })
+router.put('/updatepic',requireLogin,(req,res)=>{
+    User.findByIdAndUpdate(req.user.i_id,{$set:{pic:req.body.pic}},{new:true},
+        (err,result)=>{
+           if(err){
+               return res.status(422).json({error:"pic cannot be posted"});
+           }
+           res.json(result)
+    })
+
+})
 
 module.exports = router
