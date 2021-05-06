@@ -104,7 +104,7 @@ router.put('/comment',requireLogin,(req,res)=>{
 
 
 router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
-    Post.findOne({_id:req.params.postiId})
+    Post.findOne({_id:req.params.postId})
     .populate("postedBy","_id")
     .exec((err,post)=>{
         if(err || !post){
