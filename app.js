@@ -4,9 +4,10 @@ const express = require('express')
 const app = express();
 const bodyparser=require('body-parser');
 const mongoose = require('mongoose');
+const cors=require('cors');
 //const PORT = 3000;
 mongoose.set('useFindAndModify', false);
-
+app.use(cors());
 
 //const {MONGOURL} = require('./keys');
 app.use(bodyparser.json());
